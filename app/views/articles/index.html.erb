@@ -1,0 +1,24 @@
+<%= polaris_page(full_width: true, title: "Articles") do |page| %>
+  <% page.with_primary_action(url: new_article_path) { "Add Article" } %>
+  <% if notice.present? %>
+    <p class="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-lg inline-block" id="notice"><%= notice %></p>
+  <% end %>
+
+
+  <%= polaris_card() do %>
+    <%= polaris_index_table(@articles) do |table| %>
+        <% table.with_column("ID") do |row| %>
+          <%= polaris_text_strong { "#{row[:id]}" } %>
+        <% end %>
+        <% table.with_column("Title") do |row| %>
+          <%= polaris_text_strong { row[:title] } %>
+        <% end %>
+        <% table.with_column("Description") do |row| %>
+          <%= polaris_text_strong { row[:title] } %>
+        <% end %>
+        <% table.with_column("Actions") do |row| %>
+          <%= link_to "View", article_path(row), class: "text-blue-600" %>
+        <% end %>                        
+    <% end %>
+  <% end %>
+<% end %>

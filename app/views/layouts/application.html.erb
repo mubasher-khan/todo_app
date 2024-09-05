@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html class="<%= polaris_html_classes %>" style="<%= polaris_html_styles %>">
+  <head>
+    <title>TodoApp</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+    <%= stylesheet_link_tag "tailwind", "inter-font", "data-turbo-track": "reload" %>
+
+    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
+    <%= stylesheet_link_tag "polaris_view_components" %>
+  </head>
+
+  <body style="<%= polaris_body_styles %>">
+    <%= polaris_frame( logo: {   url: "/",   src: "https://cdn.shopify.com/s/files/1/0446/6937/files/jaded-pixel-logo-color.svg",   width: "124px" }) do |frame| %>
+      <% frame.with_top_bar do |top_bar| %>
+        <% top_bar.with_search_field do |search_field| %>
+          <%= polaris_text_field(placeholder: "Search", clear_button: true) %>
+        <% end %>
+      <% end %>
+      <%= yield %>
+    <% end %>
+  </body>
+</html>
