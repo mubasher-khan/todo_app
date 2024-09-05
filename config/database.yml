@@ -81,4 +81,5 @@ production:
   <<: *default
   database: todo_app_production
   username: todo_app
-  password: ubuntu@todo
+  password: ubuntu@
+  host: localhost
