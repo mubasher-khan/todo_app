@@ -1,11 +1,11 @@
 # config valid for current version and patch releases of Capistrano
 lock "~> 3.19.1"
-server '44.201.204.229', port: 22, roles: [:web, :app, :db], primary: true
+server '3.86.243.7', port: 22, roles: [:web, :app, :db], primary: true
 set :application, "todo_app"
 set :repo_url, "git@github.com:mubasher-khan/todo_app.git"
 set :user, 'ubuntu' #server user
 set :rvm_bin_path, "$HOME/bin"
-set :rvm_ruby_version, 'ruby_version@gemset_name'
+set :rvm_ruby_version, '3.1.2'
 set :use_sudo, false
 set :rails_env, "production"
 set :stage, :production
@@ -17,8 +17,17 @@ set :scm, :git
 set :pty, true
 set :keep_releases, 5
 set :connection_timeout, 5
+set :linked_files, %w{config/database.yml}
+set :linked_dirs, fetch(:linked_dirs, []).push('log', 'tmp/pids', 'tmp/cache', 'tmp/sockets', 'vendor/bundle', 'public/system')
 
 namespace :deploy do
+  before :linked_files, :set_master_key do
+    on roles(:app), in: :sequence, wait: 10 do
+      unless test("[ -f #{shared_path}/config/master.key ]")
+        upload! 'config/master.key', "#{shared_path}/config/master.key"
+      end
+    end
+  end
   desc 'Initial Deploy'
   task :initial do
     on roles(:app) do
@@ -26,7 +35,7 @@ namespace :deploy do
       invoke 'deploy'
     end
   end
-  set :linked_files, %w{config/database.yml}
+  # set :linked_files, %w{config/database.yml}
   after :finishing, :compile_assets
   after :finishing, :cleanup
   after :finishing, :restart
